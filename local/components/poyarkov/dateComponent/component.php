@@ -1,8 +1,7 @@
 <?php
 if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
-
     if($this->StartResultCache()){
-        if($_POST["number"]){ 
+        if($_POST["number"]){
             $arResult = [];
             $number = $_POST["number"];
             $currentDay = ConvertDateTime(ConvertTimeStamp(time()), "YYYY-MM-DD", "ru");
@@ -12,11 +11,11 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
             $dayCount = $number + $dayWeek;
             $weekCount = floor($dayCount/5);
             //Количество выходных
-            $holiday_count = ($dayCount % 5 > 0) ? 0 : 2;
+            $holidayCount = ($dayCount % 5 > 0) ? 0 : 2;
             //Количество дней в целом
-            $weekDay = $weekCount * 7 - $day_week + ($dayCount % 5) - $holiday_count;
+            $weekDay = $weekCount * 7 - $dayWeek + ($dayCount % 5) - $holidayCount;
             //Крайняя дата
-            $dateEnd = date("d.m.Y", strtotime($date . " + $weekDay day"));
+            $dateEnd = date("d.m.Y", strtotime($date . " + $weekDay day")); 
             //Крайний день
             $dateEndCount = date('N', strtotime($dateEnd));
             $holidayShift = $dateEndCount > 5 ? 7 - $dateEndCount + 1 : 0;
@@ -49,6 +48,7 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
                     //Если праздничный день выпал на рабочий
                     if(date( 'N', strtotime( $arResult["ITEMS"][$i]["PROPERTY_HOLIDAY_VALUE"])) < 6 ){
                         $finalDate = date("d.m.Y", strtotime($finalDate . "+" . 1 ." day "));
+
                         if(date( 'N', strtotime($finalDate)) == 6){
                             $finalDate = date("d.m.Y", strtotime($finalDate . "+" . 2 ." day "));
                         }
@@ -62,4 +62,5 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
         }
         $this->IncludeComponentTemplate();        
     }
+
 ?>
